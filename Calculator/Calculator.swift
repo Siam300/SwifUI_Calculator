@@ -9,14 +9,15 @@ import SwiftUI
 struct Calculator: View {
     let operators = ["÷", "+", "X"]
     
+    @State var animateBackground: Bool = false
     @State var visibleWorkings = ""
     @State var visibleResults: Float = 0.0
     @State var showAlert: Bool = false
     
     var body: some View {
         ZStack {
-            Color.cyan
-                .edgesIgnoringSafeArea(.all)
+//            Color.cyan
+//                .edgesIgnoringSafeArea(.all)
             VStack {
                 Spacer()
                 HStack {
@@ -41,6 +42,18 @@ struct Calculator: View {
                 
                 buttonView(buttonPressed: buttonPressed)
             }
+        }
+        .background{
+            LinearGradient(colors: [Color.blue, Color.cyan],
+                           startPoint: .topLeading , endPoint: .bottomTrailing)
+                .edgesIgnoringSafeArea(.all)
+                .hueRotation(.degrees(animateBackground ? 45 : 0))
+                .onAppear {
+                    withAnimation(.easeInOut(duration:3)
+                        .repeatForever(autoreverses: true)) {
+                            animateBackground.toggle()
+                        }
+                }
         }
     }
     
@@ -98,7 +111,6 @@ struct Calculator: View {
             }
         }
     }
-    
     
     func addOperator(_ cell : String){
         if !visibleWorkings.isEmpty{
@@ -207,17 +219,6 @@ struct Calculator: View {
                             .foregroundColor(Color.white)
                             .cornerRadius(15)
                     })
-                    
-                    //                Button(action: {
-                    //                    buttonPressed("%")
-                    //                }, label: {
-                    //                    Text("%")
-                    //                        .font(.title)
-                    //                        .frame(maxWidth: 70, maxHeight: 70)
-                    //                        .background(Color.orange)
-                    //                        .foregroundColor(Color.white)
-                    //                        .cornerRadius(15)
-                    //                })
                     
                     Button(action: {
                         buttonPressed("÷")
