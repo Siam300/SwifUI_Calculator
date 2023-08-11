@@ -16,13 +16,10 @@ struct Calculator: View {
     
     var body: some View {
         ZStack {
-//            Color.cyan
-//                .edgesIgnoringSafeArea(.all)
             VStack {
                 Spacer()
                 HStack {
                     Spacer()
-                    
                     Text(visibleWorkings)
                         .font(.system(size: 90))
                     
@@ -39,21 +36,108 @@ struct Calculator: View {
                         .foregroundColor(Color.white)
                         .font(.system(size: 50, weight: .heavy))
                 }
+                VStack(spacing: 10){
+                    HStack(spacing: 10){
+                        calcButton(with: "AC")
+                            .frame(width: 150, height: 70)
+                            .background(Color.red)
+                            .cornerRadius(15)
+                        calcButton(with: "Clear", imageName: "delete.left")
+                            .frame(width: 70, height: 70)
+                            .background(Color.blue)
+                            .cornerRadius(15)
+                        calcButton(with: "÷")
+                            .frame(width: 70, height: 70)
+                            .background(Color.gray)
+                            .cornerRadius(15)
+                    }
+                    HStack(spacing: 10){
+                        calcButton(with: "7")
+                            .frame(width: 70, height: 70)
+                            .background(Color.orange)
+                            .cornerRadius(15)
+                        calcButton(with: "8")
+                            .frame(width: 70, height: 70)
+                            .background(Color.orange)
+                            .cornerRadius(15)
+                        calcButton(with: "9")
+                            .frame(width: 70, height: 70)
+                            .background(Color.orange)
+                            .cornerRadius(15)
+                        calcButton(with: "X", imageName: "multiply")
+                            .frame(width: 70, height: 70)
+                            .background(Color.gray)
+                            .cornerRadius(15)
+                    }
+                    HStack(spacing: 10){
+                        calcButton(with: "4")
+                            .frame(width: 70, height: 70)
+                            .background(Color.orange)
+                            .cornerRadius(15)
+                        calcButton(with: "5")
+                            .frame(width: 70, height: 70)
+                            .background(Color.orange)
+                            .cornerRadius(15)
+                        calcButton(with: "6")
+                            .frame(width: 70, height: 70)
+                            .background(Color.orange)
+                            .cornerRadius(15)
+                        calcButton(with: "-")
+                            .frame(width: 70, height: 70)
+                            .background(Color.gray)
+                            .cornerRadius(15)
+                    }
+                    HStack(spacing: 10){
+                        calcButton(with: "1")
+                            .frame(width: 70, height: 70)
+                            .background(Color.orange)
+                            .cornerRadius(15)
+                        calcButton(with: "2")
+                            .frame(width: 70, height: 70)
+                            .background(Color.orange)
+                            .cornerRadius(15)
+                        calcButton(with: "3")
+                            .frame(width: 70, height: 70)
+                            .background(Color.orange)
+                            .cornerRadius(15)
+                        calcButton(with: "+")
+                            .frame(width: 70, height: 70)
+                            .background(Color.gray)
+                            .cornerRadius(15)
+                    }
+                    HStack(spacing: 10){
+                        calcButton(with: ".")
+                            .frame(width: 70, height: 70)
+                            .background(Color.cyan)
+                            .cornerRadius(15)
+                        calcButton(with: "0")
+                            .frame(width: 70, height: 70)
+                            .background(Color.orange)
+                            .cornerRadius(15)
+                        calcButton(with: "^")
+                            .frame(width: 70, height: 70)
+                            .background(Color.green)
+                            .cornerRadius(15)
+                        calcButton(with: "=")
+                            .frame(width: 70, height: 70)
+                            .background(Color.purple)
+                            .cornerRadius(15)
+                    }
+                }
                 
-                buttonView(buttonPressed: buttonPressed)
             }
         }
         .background{
             LinearGradient(colors: [Color.blue, Color.cyan],
                            startPoint: .topLeading , endPoint: .bottomTrailing)
-                .edgesIgnoringSafeArea(.all)
-                .hueRotation(.degrees(animateBackground ? 45 : 0))
-                .onAppear {
-                    withAnimation(.easeInOut(duration:3)
-                        .repeatForever(autoreverses: true)) {
-                            animateBackground.toggle()
-                        }
-                }
+            .edgesIgnoringSafeArea(.all)
+            .hueRotation(.degrees(animateBackground ? 45 : 0))
+            .onAppear {
+                withAnimation(.easeInOut(duration:3)
+                    .repeatForever(autoreverses: true)) {
+                        animateBackground.toggle()
+                    }
+            }
         }
     }
     
@@ -191,234 +275,32 @@ struct Calculator: View {
         }
     }
     
-    struct buttonView: View {
-        var buttonPressed: (String) -> Void
-        
-        var body: some View {
-            VStack(spacing: 10) {
-                
-                HStack(spacing: 10){
-                    Button(action: {
-                        buttonPressed("AC")
-                    }, label: {
-                        Text("AC")
-                            .font(.title)
-                            .frame(maxWidth: 140, maxHeight: 70)
-                            .background(Color.red)
-                            .foregroundColor(Color.white)
-                            .cornerRadius(15)
-                    })
-                    
-                    Button(action: {
-                        buttonPressed("Clear")
-                    }, label: {
-                        Image(systemName: "delete.left")
-                            .font(.title)
-                            .frame(maxWidth: 70, maxHeight: 70)
-                            .background(Color.orange)
-                            .foregroundColor(Color.white)
-                            .cornerRadius(15)
-                    })
-                    
-                    Button(action: {
-                        buttonPressed("÷")
-                    }, label: {
-                        Text("÷")
-                            .font(.title)
-                            .frame(maxWidth: 70, maxHeight: 70)
-                            .background(Color.orange)
-                            .foregroundColor(Color.white)
-                            .cornerRadius(15)
-                    })
-                }
-                
-                HStack(spacing: 10){
-                    Button(action: {
-                        buttonPressed("7")
-                    }, label: {
-                        Text("7")
-                            .font(.title)
-                            .frame(maxWidth: 70, maxHeight: 70)
-                            .background(Color.orange)
-                            .foregroundColor(Color.white)
-                            .cornerRadius(15)
-                    })
-                    
-                    Button(action: {
-                        buttonPressed("8")
-                    }, label: {
-                        Text("8")
-                            .font(.title)
-                            .frame(maxWidth: 70, maxHeight: 70)
-                            .background(Color.orange)
-                            .foregroundColor(Color.white)
-                            .cornerRadius(15)
-                    })
-                    
-                    Button(action: {
-                        buttonPressed("9")
-                    }, label: {
-                        Text("9")
-                            .font(.title)
-                            .frame(maxWidth: 70, maxHeight: 70)
-                            .background(Color.orange)
-                            .foregroundColor(Color.white)
-                            .cornerRadius(15)
-                    })
-                    
-                    Button(action: {
-                        buttonPressed("X")
-                    }, label: {
-                        Image(systemName: "multiply")
-                            .font(.title)
-                            .frame(maxWidth: 70, maxHeight: 70)
-                            .background(Color.orange)
-                            .foregroundColor(Color.white)
-                            .cornerRadius(15)
-                    })
-                }
-                
-                HStack(spacing: 10){
-                    Button(action: {
-                        buttonPressed("4")
-                    }, label: {
-                        Text("4")
-                            .font(.title)
-                            .frame(maxWidth: 70, maxHeight: 70)
-                            .background(Color.orange)
-                            .foregroundColor(Color.white)
-                            .cornerRadius(15)
-                    })
-                    
-                    Button(action: {
-                        buttonPressed("5")
-                    }, label: {
-                        Text("5")
-                            .font(.title)
-                            .frame(maxWidth: 70, maxHeight: 70)
-                            .background(Color.orange)
-                            .foregroundColor(Color.white)
-                            .cornerRadius(15)
-                    })
-                    
-                    Button(action: {
-                        buttonPressed("6")
-                    }, label: {
-                        Text("6")
-                            .font(.title)
-                            .frame(maxWidth: 70, maxHeight: 70)
-                            .background(Color.orange)
-                            .foregroundColor(Color.white)
-                            .cornerRadius(15)
-                    })
-                    
-                    Button(action: {
-                        buttonPressed("-")
-                    }, label: {
-                        Image(systemName: "minus")
-                            .font(.title)
-                            .frame(maxWidth: 70, maxHeight: 70)
-                            .background(Color.orange)
-                            .foregroundColor(Color.white)
-                            .cornerRadius(15)
-                    })
-                }
-                
-                HStack(spacing: 10){
-                    Button(action: {
-                        buttonPressed("1")
-                    }, label: {
-                        Text("1")
-                            .font(.title)
-                            .frame(maxWidth: 70, maxHeight: 70)
-                            .background(Color.orange)
-                            .foregroundColor(Color.white)
-                            .cornerRadius(15)
-                    })
-                    
-                    Button(action: {
-                        buttonPressed("2")
-                    }, label: {
-                        Text("2")
-                            .font(.title)
-                            .frame(maxWidth: 70, maxHeight: 70)
-                            .background(Color.orange)
-                            .foregroundColor(Color.white)
-                            .cornerRadius(15)
-                    })
-                    
-                    Button(action: {
-                        buttonPressed("3")
-                    }, label: {
-                        Text("3")
-                            .font(.title)
-                            .frame(maxWidth: 70, maxHeight: 70)
-                            .background(Color.orange)
-                            .foregroundColor(Color.white)
-                            .cornerRadius(15)
-                    })
-                    
-                    Button(action: {
-                        buttonPressed("+")
-                    }, label: {
-                        Image(systemName: "plus")
-                            .font(.title)
-                            .frame(maxWidth: 70, maxHeight: 70)
-                            .background(Color.orange)
-                            .foregroundColor(Color.white)
-                            .cornerRadius(15)
-                    })
-                }
-                
-                HStack(spacing: 10){
-                    Button(action: {
-                        buttonPressed(".")
-                    }, label: {
-                        Text(".")
-                            .font(.title)
-                            .frame(maxWidth: 70, maxHeight: 70)
-                            .background(Color.orange)
-                            .foregroundColor(Color.white)
-                            .cornerRadius(15)
-                    })
-                    
-                    Button(action: {
-                        buttonPressed("0")
-                    }, label: {
-                        Text("0")
-                            .font(.title)
-                            .frame(maxWidth: 70, maxHeight: 70)
-                            .background(Color.orange)
-                            .foregroundColor(Color.white)
-                            .cornerRadius(15)
-                    })
-                    
-                    Button(action: {
-                        buttonPressed("^")
-                    }, label: {
-                        Text("^")
-                            .font(.title)
-                            .frame(maxWidth: 70, maxHeight: 70)
-                            .background(Color.orange)
-                            .foregroundColor(Color.white)
-                            .cornerRadius(15)
-                    })
-                    
-                    Button(action: {
-                        buttonPressed("=")
-                        
-                    }, label: {
-                        Image(systemName: "equal")
-                            .font(.title)
-                            .frame(maxWidth: 70, maxHeight: 70)
-                            .background(Color.orange)
-                            .foregroundColor(Color.white)
-                            .cornerRadius(15)
-                    })
-                }
-            }
-        }
+    func calcButton(with title: String) -> some View {
+        Button(action: {
+            buttonPressed(cell: title)
+        }, label: {
+            Text(title)
+                .font(.title)
+                .frame(maxWidth: 70, maxHeight: 70)
+                //.background(Color.orange)
+                .foregroundColor(Color.white)
+                .cornerRadius(15)
+        })
     }
+    
+    func calcButton(with title: String, imageName: String) -> some View {
+        Button(action: {
+            buttonPressed(cell: title)
+        }, label: {
+            Image(systemName: imageName)
+                .font(.title)
+                .frame(maxWidth: 70, maxHeight: 70)
+                //.background(Color.orange)
+                .foregroundColor(Color.white)
+                //.cornerRadius(15)
+        })
+    }
+    
 }
     
     struct Calculator_Previews: PreviewProvider {
