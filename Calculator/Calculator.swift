@@ -31,114 +31,45 @@ struct Calculator: View {
                 HStack{
                     Spacer()
                     Text(String(format: "%.3f", visibleResults))
-                    //Text(formatResult(val: visibleResults))
                         .padding()
                         .foregroundColor(Color.white)
                         .font(.system(size: 50, weight: .heavy))
                 }
                 VStack(spacing: 10){
                     HStack(spacing: 10){
-                        calcButton(with: "AC")
-                            .frame(width: 150, height: 70)
-                            .background(Color.red)
-                            .cornerRadius(15)
-                        calcButton(with: "Clear", imageName: "delete.left")
-                            .frame(width: 70, height: 70)
-                            .background(Color.blue)
-                            .cornerRadius(15)
-                        calcButton(with: "÷")
-                            .frame(width: 70, height: 70)
-                            .background(Color.gray)
-                            .cornerRadius(15)
+                        doubleSizeButton(with: .ac)
+                        calcButton(with: .clear, imageName: "delete.left", bgColor: .blue)
+                        calcButton(with: .divide, bgColor: .gray)
                     }
                     HStack(spacing: 10){
-                        calcButton(with: "7")
-                            .frame(width: 70, height: 70)
-                            .background(Color.orange)
-                            .cornerRadius(15)
-                        calcButton(with: "8")
-                            .frame(width: 70, height: 70)
-                            .background(Color.orange)
-                            .cornerRadius(15)
-                        calcButton(with: "9")
-                            .frame(width: 70, height: 70)
-                            .background(Color.orange)
-                            .cornerRadius(15)
-                        calcButton(with: "X", imageName: "multiply")
-                            .frame(width: 70, height: 70)
-                            .background(Color.gray)
-                            .cornerRadius(15)
+                        calcButton(with: .seven)
+                        calcButton(with: .eight)
+                        calcButton(with: .nine)
+                        calcButton(with: .multiply, imageName: "multiply", bgColor: .gray)
                     }
                     HStack(spacing: 10){
-                        calcButton(with: "4")
-                            .frame(width: 70, height: 70)
-                            .background(Color.orange)
-                            .cornerRadius(15)
-                        calcButton(with: "5")
-                            .frame(width: 70, height: 70)
-                            .background(Color.orange)
-                            .cornerRadius(15)
-                        calcButton(with: "6")
-                            .frame(width: 70, height: 70)
-                            .background(Color.orange)
-                            .cornerRadius(15)
-                        calcButton(with: "-")
-                            .frame(width: 70, height: 70)
-                            .background(Color.gray)
-                            .cornerRadius(15)
+                        calcButton(with: .four)
+                        calcButton(with: .five)
+                        calcButton(with: .six)
+                        calcButton(with: .subtract, bgColor: .gray)
                     }
                     HStack(spacing: 10){
-                        calcButton(with: "1")
-                            .frame(width: 70, height: 70)
-                            .background(Color.orange)
-                            .cornerRadius(15)
-                        calcButton(with: "2")
-                            .frame(width: 70, height: 70)
-                            .background(Color.orange)
-                            .cornerRadius(15)
-                        calcButton(with: "3")
-                            .frame(width: 70, height: 70)
-                            .background(Color.orange)
-                            .cornerRadius(15)
-                        calcButton(with: "+")
-                            .frame(width: 70, height: 70)
-                            .background(Color.gray)
-                            .cornerRadius(15)
+                        calcButton(with: .one)
+                        calcButton(with: .two)
+                        calcButton(with: .three)
+                        calcButton(with: .add, bgColor: .gray)
                     }
                     HStack(spacing: 10){
-                        calcButton(with: ".")
-                            .frame(width: 70, height: 70)
-                            .background(Color.cyan)
-                            .cornerRadius(15)
-                        calcButton(with: "0")
-                            .frame(width: 70, height: 70)
-                            .background(Color.orange)
-                            .cornerRadius(15)
-                        calcButton(with: "^")
-                            .frame(width: 70, height: 70)
-                            .background(Color.green)
-                            .cornerRadius(15)
-                        calcButton(with: "=")
-                            .frame(width: 70, height: 70)
-                            .background(Color.purple)
-                            .cornerRadius(15)
+                        calcButton(with: .decimal, bgColor: .cyan)
+                        calcButton(with: .zero)
+                        calcButton(with: .power, bgColor: .green)
+                        calcButton(with: .equal, bgColor: .purple)
                     }
                 }
                 
             }
         }
-        .background{
-            LinearGradient(colors: [Color.blue, Color.cyan],
-                           startPoint: .topLeading , endPoint: .bottomTrailing)
-            .edgesIgnoringSafeArea(.all)
-            .hueRotation(.degrees(animateBackground ? 45 : 0))
-            .onAppear {
-                withAnimation(.easeInOut(duration:3)
-                    .repeatForever(autoreverses: true)) {
-                        animateBackground.toggle()
-                    }
-            }
-        }
+        .background(bgAnimation())
     }
     
     enum CalcButton: String, Hashable {
@@ -162,14 +93,6 @@ struct Calculator: View {
         case power = "^"
         case equal = "="
     }
-    
-    let buttons: [[CalcButton]] = [
-        [.ac, .clear, .divide],
-        [.seven, .eight, .nine, .multiply],
-        [.four, .five, .six, .subtract],
-        [.one, .two, .three, .add],
-        [.decimal, .zero, .power, .equal],
-    ]
     
     func buttonPressed(cell: String) {
         if let button = CalcButton(rawValue: cell) {
@@ -230,7 +153,6 @@ struct Calculator: View {
         var workings = visibleWorkings.replacingOccurrences(of: "X", with: "*")
         workings = workings.replacingOccurrences(of: "^", with: "**")
         
-        // Perform floating-point division
         workings = workings.replacingOccurrences(of: "÷", with: "/")
         
         let expression = NSExpression(format: workings)
@@ -275,36 +197,66 @@ struct Calculator: View {
         }
     }
     
-    func calcButton(with title: String) -> some View {
+    func doubleSizeButton(with title: CalcButton, imageName: String? = nil, bgColor: Color = .red) -> some View {
         Button(action: {
-            buttonPressed(cell: title)
+            buttonPressed(cell: title.rawValue)
         }, label: {
-            Text(title)
-                .font(.title)
-                .frame(maxWidth: 70, maxHeight: 70)
-                //.background(Color.orange)
-                .foregroundColor(Color.white)
-                .cornerRadius(15)
+            if let imgName = imageName {
+                Image(systemName: imgName)
+                    .font(.title)
+                    .foregroundColor(Color.white)
+            } else {
+                Text(title.rawValue)
+                    .font(.title)
+                    .foregroundColor(Color.white)
+            }
         })
+        .frame(maxWidth: 150, maxHeight: 70)
+        .background(bgColor)
+        .cornerRadius(15)
     }
     
-    func calcButton(with title: String, imageName: String) -> some View {
+    func calcButton(with title: CalcButton, imageName: String? = nil, bgColor: Color = .orange) -> some View {
         Button(action: {
-            buttonPressed(cell: title)
+            buttonPressed(cell: title.rawValue)
         }, label: {
-            Image(systemName: imageName)
-                .font(.title)
-                .frame(maxWidth: 70, maxHeight: 70)
-                //.background(Color.orange)
-                .foregroundColor(Color.white)
-                //.cornerRadius(15)
+            if let imgName = imageName {
+                Image(systemName: imgName)
+                    .font(.title)
+                    .foregroundColor(Color.white)
+            } else {
+                Text(title.rawValue)
+                    .font(.title)
+                    .foregroundColor(Color.white)
+            }
         })
+        .frame(maxWidth: 70, maxHeight: 70)
+        .background(bgColor)
+        .cornerRadius(15)
+        
     }
+    
+    func bgAnimation() -> some View {
+        LinearGradient(colors: [Color.blue, Color.cyan],
+                       startPoint: .topLeading, endPoint: .bottomTrailing)
+            .edgesIgnoringSafeArea(.all)
+            .hueRotation(.degrees(animateBackground ? 45 : 0))
+            .onAppear {
+                withAnimation(.easeInOut(duration: 3)
+                    .repeatForever(autoreverses: true)) {
+                        animateBackground.toggle()
+                    }
+            }
+    }
+
     
 }
-    
-    struct Calculator_Previews: PreviewProvider {
-        static var previews: some View {
-            Calculator()
-        }
+
+
+
+
+struct Calculator_Previews: PreviewProvider {
+    static var previews: some View {
+        Calculator()
     }
+}
